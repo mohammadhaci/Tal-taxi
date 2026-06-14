@@ -3,6 +3,9 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
+import { FloatingContact } from "@/components/floating-contact";
+import { LocalBusinessJsonLd } from "@/components/json-ld";
+import { CookieConsent } from "@/components/cookie-consent";
 import { COMPANY } from "@/lib/company";
 
 const inter = Inter({
@@ -30,6 +33,9 @@ export default function RootLayout({
         <SiteHeader />
         <main className="flex-1">{children}</main>
         <SiteFooter />
+        <FloatingContact />
+        <CookieConsent />
+        <LocalBusinessJsonLd />
       </body>
     </html>
   );

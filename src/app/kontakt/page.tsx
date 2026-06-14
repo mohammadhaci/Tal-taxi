@@ -1,5 +1,6 @@
-import { PageShell, PlaceholderNote } from "@/components/page-shell";
+import { PageShell } from "@/components/page-shell";
 import { COMPANY } from "@/lib/company";
+import { ContactForm } from "./contact-form";
 
 export const metadata = { title: "Kontakt" };
 
@@ -20,7 +21,8 @@ export default function Page() {
           <p><span className="font-semibold text-ink">Öffnungszeiten:</span> {COMPANY.hours}</p>
         </div>
         <div>
-          <PlaceholderNote phase="Phase 1 (Kontaktformular & Karte)" />
+          <h2 className="mb-4 text-lg font-bold text-ink">Schreiben Sie uns</h2>
+          <ContactForm />
         </div>
       </div>
     </PageShell>

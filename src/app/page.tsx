@@ -115,6 +115,29 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Einsatzgebiet */}
+      <section className="border-t border-border bg-surface">
+        <div className="mx-auto max-w-6xl px-4 py-16">
+          <h2 className="text-3xl font-bold text-ink">Unser Einsatzgebiet</h2>
+          <p className="mt-2 text-muted">
+            Wir sind in ganz Vorarlberg für Sie unterwegs — unter anderem in:
+          </p>
+          <div className="mt-6 flex flex-wrap gap-2">
+            {[
+              "Bregenz", "Dornbirn", "Feldkirch", "Bludenz", "Hard", "Lustenau",
+              "Hohenems", "Götzis", "Rankweil", "Lauterach", "Wolfurt", "Bürs",
+            ].map((city) => (
+              <span
+                key={city}
+                className="rounded-full border border-border bg-background px-3 py-1 text-sm text-ink-soft"
+              >
+                Taxi {city}
+              </span>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* CTA */}
       <section className="bg-brand">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-4 py-12 text-center sm:flex-row sm:text-left">
