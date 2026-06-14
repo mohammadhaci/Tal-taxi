@@ -1,0 +1,183 @@
+// Tal Taxi — Datenmodell
+// Phase 0: Grundgerüst. Wird in späteren Phasen erweitert.
+//
+// Für lokale Entwicklung wird SQLite genutzt; in Produktion PostgreSQL.
+// Beim Wechsel auf Postgres nur `provider` und DATABASE_URL anpassen.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// ─────────────────────────────────────────────────────────────
+// Admin-Benutzer & Rollen
+// ─────────────────────────────────────────────────────────────
+enum Role {
+  OWNER
+  STAFF
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String?
+  passwordHash String
+  role         Role     @default(STAFF)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+// ─────────────────────────────────────────────────────────────
+// Buchungen (Online-Buchung)
+// ─────────────────────────────────────────────────────────────
+enum BookingStatus {
+  PENDING // Ausstehend
+  CONFIRMED // Bestätigt
+  REJECTED // Abgelehnt
+  COMPLETED // Abgeschlossen
+  CANCELLED // Storniert
+}
+
+enum TripType {
+  ONE_WAY // Einfache Fahrt
+  RETURN // Hin- und Rückfahrt
+}
+
+model Booking {
+  id           String        @id @default(cuid())
+  reference    String        @unique // Buchungsnummer für den Kunden
+  status       BookingStatus @default(PENDING)
+  tripType     TripType      @default(ONE_WAY)
+
+  // Strecke
+  pickupAddress  String
+  pickupLat      Float?
+  pickupLng      Float?
+  dropoffAddress String
+  dropoffLat     Float?
+  dropoffLng     Float?
+  distanceKm     Float?
+  durationMin    Int?
+
+  // Termin
+  pickupAt   DateTime
+  returnAt   DateTime?
+
+  // Fahrtdetails
+  passengers  Int     @default(1)
+  luggage     Int     @default(0)
+  vehicleType String?
+  notes       String?
+
+  // Kontakt
+  customerName  String
+  customerPhone String
+  customerEmail String?
+
+  // Preis (geschätzt, unverbindlich)
+  estimatedPrice Float?
+  finalPrice     Float?
+
+  // Zuweisung
+  assignedDriverId  String?
+  assignedDriver    Driver?  @relation(fields: [assignedDriverId], references: [id])
+  assignedVehicleId String?
+  assignedVehicle   Vehicle? @relation(fields: [assignedVehicleId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status])
+  @@index([pickupAt])
+}
+
+// ─────────────────────────────────────────────────────────────
+// Flotte & Fahrer
+// ─────────────────────────────────────────────────────────────
+model Vehicle {
+  id        String    @id @default(cuid())
+  name      String // z. B. "Mercedes V-Klasse"
+  type      String // z. B. "Standard", "Van", "Barrierefrei"
+  seats     Int       @default(4)
+  active    Boolean   @default(true)
+  bookings  Booking[]
+  createdAt DateTime  @default(now())
+}
+
+model Driver {
+  id        String    @id @default(cuid())
+  name      String
+  phone     String?
+  active    Boolean   @default(true)
+  bookings  Booking[]
+  createdAt DateTime  @default(now())
+}
+
+// ─────────────────────────────────────────────────────────────
+// Tarif-Engine (Vorarlberger Tarif) — vollständig im Admin editierbar
+// ─────────────────────────────────────────────────────────────
+model TariffSettings {
+  id        String   @id @default("default")
+  // Grundtaxe
+  baseFare  Float    @default(3.5)
+  // Kilometerpreise mit Degression
+  pricePerKmTier1 Float @default(1.9) // 0 – tier1End km
+  tier1EndKm      Float @default(7.5)
+  pricePerKmTier2 Float @default(1.7) // tier1End – tier2End km
+  tier2EndKm      Float @default(15)
+  pricePerKmTier3 Float @default(1.5) // > tier2End km
+  // Tag/Nacht
+  nightSurchargePct Float @default(0) // Prozentaufschlag nachts
+  nightStartHour    Int   @default(22)
+  nightEndHour      Int   @default(6)
+  // Wartezeit
+  waitingPricePerMin Float @default(0.5)
+  freeWaitingMin     Int   @default(0)
+  // Sonstiges
+  minFare       Float @default(0)
+  currency      String @default("EUR")
+  disclaimer    String @default("Alle Preise sind unverbindliche Schätzungen.")
+  updatedAt     DateTime @updatedAt
+}
+
+model FixedRoute {
+  id        String  @id @default(cuid())
+  label     String // z. B. "Bregenz → Flughafen Zürich"
+  fromHint  String? // Stichwort/Ort für Zuordnung
+  toHint    String?
+  price     Float
+  active    Boolean @default(true)
+  createdAt DateTime @default(now())
+}
+
+// ─────────────────────────────────────────────────────────────
+// Inhalts-Verwaltung (CMS) — Seiten & Blöcke
+// ─────────────────────────────────────────────────────────────
+model Page {
+  id        String   @id @default(cuid())
+  slug      String   @unique
+  title     String
+  content   String   @default("") // JSON/MDX der Sektionen
+  published  Boolean @default(true)
+  metaTitle       String?
+  metaDescription String?
+  updatedAt DateTime @updatedAt
+}
+
+// Frei editierbare Einstellungen (Firmendaten, SEO, Texte) als Key/Value
+model SiteSetting {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt
+}
+
+model MediaAsset {
+  id        String   @id @default(cuid())
+  url       String
+  alt       String?
+  createdAt DateTime @default(now())
+}
