@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { NAV_LINKS } from "@/lib/company";
 import { getSiteSettings, telHref } from "@/lib/site-settings";
+import { MobileNav } from "@/components/mobile-nav";
 
 export async function SiteHeader() {
   const s = await getSiteSettings();
@@ -41,6 +42,7 @@ export async function SiteHeader() {
           >
             Jetzt buchen
           </Link>
+          <MobileNav />
         </div>
       </div>
     </header>

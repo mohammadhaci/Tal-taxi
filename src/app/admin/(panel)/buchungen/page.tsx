@@ -40,7 +40,15 @@ export default async function BookingsPage({
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold text-ink">Buchungen</h1>
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold text-ink">Buchungen</h1>
+        <a
+          href="/admin/buchungen/export"
+          className="rounded-lg border border-border bg-background px-4 py-2 text-sm font-medium text-ink-soft hover:bg-surface"
+        >
+          ⬇ CSV-Export
+        </a>
+      </div>
 
       <div className="flex flex-wrap gap-2">
         {FILTERS.map((f) => {

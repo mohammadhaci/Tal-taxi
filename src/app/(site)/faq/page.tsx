@@ -21,12 +21,26 @@ const FAQS = [
   },
 ];
 
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: FAQS.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a },
+  })),
+};
+
 export default function Page() {
   return (
     <PageShell
       title="Häufige Fragen"
       intro="Antworten auf die wichtigsten Fragen rund um Ihre Fahrt."
     >
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
       <div className="max-w-3xl divide-y divide-border">
         {FAQS.map((f) => (
           <div key={f.q} className="py-5">

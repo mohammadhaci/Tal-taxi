@@ -22,6 +22,7 @@ export async function SiteFooter() {
             <li><Link href="/dienstleistungen" className="hover:text-brand">Dienstleistungen</Link></li>
             <li><Link href="/preisrechner" className="hover:text-brand">Preisrechner</Link></li>
             <li><Link href="/buchen" className="hover:text-brand">Online buchen</Link></li>
+            <li><Link href="/buchung-status" className="hover:text-brand">Buchung verfolgen</Link></li>
             <li><Link href="/kontakt" className="hover:text-brand">Kontakt</Link></li>
           </ul>
         </div>
