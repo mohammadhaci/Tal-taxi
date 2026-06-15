@@ -9,12 +9,26 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.SITE_URL ?? "https://www.tal-taxi.at"),
   title: {
     default: `${COMPANY.name} — Ihr Taxi in Vorarlberg`,
     template: `%s | ${COMPANY.name}`,
   },
   description:
     "Tal Taxi — Zuverlässige Taxifahrten in ganz Vorarlberg. Flughafentransfer, Stadtfahrten und mehr. Jetzt online buchen.",
+  keywords: [
+    "Taxi Vorarlberg", "Taxi Bregenz", "Taxi Dornbirn", "Taxi Feldkirch",
+    "Flughafentransfer Vorarlberg", "Taxi online buchen",
+  ],
+  openGraph: {
+    type: "website",
+    locale: "de_AT",
+    siteName: COMPANY.name,
+    title: `${COMPANY.name} — Ihr Taxi in Vorarlberg`,
+    description:
+      "Zuverlässige Taxifahrten in ganz Vorarlberg. Jetzt bequem online buchen.",
+  },
+  robots: { index: true, follow: true },
 };
 
 export default function RootLayout({
