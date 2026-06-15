@@ -26,6 +26,12 @@ export async function createBooking(
   const d = parsed.data;
   if (d.website) return { ok: true, reference: "TT-XXXXXX" }; // Bot
 
+  // Termin darf nicht in der Vergangenheit liegen (Puffer von 5 Min.)
+  const pickupDate = new Date(d.pickupAt);
+  if (isNaN(pickupDate.getTime()) || pickupDate.getTime() < Date.now() - 5 * 60 * 1000) {
+    return { error: "Bitte wählen Sie einen Termin in der Zukunft." };
+  }
+
   // Preis serverseitig ermitteln (Vertrauensgrenze)
   let estimatedPrice: number | null = null;
   if (d.fixedRouteId) {

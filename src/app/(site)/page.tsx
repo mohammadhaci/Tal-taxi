@@ -64,23 +64,32 @@ export default async function Home() {
             </div>
           </div>
 
-          {/* Platzhalter für Buchungs-Widget / Bild */}
+          {/* So einfach geht's */}
           <div className="rounded-xl border border-white/10 bg-white/5 p-6">
-            <p className="text-sm font-semibold text-brand">Schnellbuchung</p>
-            <div className="mt-4 space-y-3 text-sm text-gray-300">
-              <div className="rounded-lg bg-white/5 p-3">Von: <span className="text-gray-500">(Platzhalter)</span></div>
-              <div className="rounded-lg bg-white/5 p-3">Nach: <span className="text-gray-500">(Platzhalter)</span></div>
-              <div className="rounded-lg bg-white/5 p-3">Datum &amp; Uhrzeit: <span className="text-gray-500">(Platzhalter)</span></div>
-              <Link
-                href="/buchen"
-                className="block rounded-lg bg-brand py-3 text-center font-semibold text-brand-foreground hover:bg-brand-dark"
-              >
-                Weiter zur Buchung
-              </Link>
-              <p className="text-xs text-gray-500">
-                Das interaktive Buchungs-Widget folgt in Phase 3.
-              </p>
-            </div>
+            <p className="text-sm font-semibold text-brand">So einfach geht&apos;s</p>
+            <ol className="mt-4 space-y-4">
+              {[
+                { n: "1", t: "Strecke angeben", d: "Abhol- und Zieladresse eingeben." },
+                { n: "2", t: "Preis sehen", d: "Sofortige, faire Preisschätzung." },
+                { n: "3", t: "Bestätigung erhalten", d: "Wir bestätigen Ihre Fahrt." },
+              ].map((step) => (
+                <li key={step.n} className="flex gap-3">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand font-bold text-brand-foreground">
+                    {step.n}
+                  </span>
+                  <div>
+                    <p className="font-semibold text-white">{step.t}</p>
+                    <p className="text-sm text-gray-400">{step.d}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+            <Link
+              href="/buchen"
+              className="mt-5 block rounded-lg bg-brand py-3 text-center font-semibold text-brand-foreground hover:bg-brand-dark"
+            >
+              Jetzt Fahrt buchen
+            </Link>
           </div>
         </div>
       </section>
