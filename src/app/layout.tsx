@@ -1,11 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { SiteHeader } from "@/components/site-header";
-import { SiteFooter } from "@/components/site-footer";
-import { FloatingContact } from "@/components/floating-contact";
-import { LocalBusinessJsonLd } from "@/components/json-ld";
-import { CookieConsent } from "@/components/cookie-consent";
 import { COMPANY } from "@/lib/company";
 
 const inter = Inter({
@@ -29,14 +24,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="de" className={`${inter.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col bg-background text-foreground">
-        <SiteHeader />
-        <main className="flex-1">{children}</main>
-        <SiteFooter />
-        <FloatingContact />
-        <CookieConsent />
-        <LocalBusinessJsonLd />
-      </body>
+      <body className="min-h-full bg-background text-foreground">{children}</body>
     </html>
   );
 }

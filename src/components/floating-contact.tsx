@@ -1,11 +1,12 @@
-import { COMPANY } from "@/lib/company";
+import { getSiteSettings, telHref, waHref } from "@/lib/site-settings";
 
 /** Schwebende Kontakt-Buttons (Telefon + WhatsApp) — wichtigster Kanal für Taxi. */
-export function FloatingContact() {
+export async function FloatingContact() {
+  const s = await getSiteSettings();
   return (
     <div className="fixed bottom-5 right-5 z-50 flex flex-col gap-3">
       <a
-        href={COMPANY.whatsappHref}
+        href={waHref(s.whatsapp)}
         target="_blank"
         rel="noopener noreferrer"
         aria-label="WhatsApp"
@@ -16,7 +17,7 @@ export function FloatingContact() {
         </svg>
       </a>
       <a
-        href={COMPANY.phoneHref}
+        href={telHref(s.phone)}
         aria-label="Anrufen"
         className="flex h-14 w-14 items-center justify-center rounded-full bg-brand text-brand-foreground shadow-lg transition-transform hover:scale-105"
       >

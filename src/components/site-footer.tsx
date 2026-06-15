@@ -1,7 +1,8 @@
 import Link from "next/link";
-import { COMPANY } from "@/lib/company";
+import { getSiteSettings, telHref } from "@/lib/site-settings";
 
-export function SiteFooter() {
+export async function SiteFooter() {
+  const s = await getSiteSettings();
   return (
     <footer className="border-t border-border bg-ink text-gray-300">
       <div className="mx-auto grid max-w-6xl gap-8 px-4 py-12 sm:grid-cols-2 lg:grid-cols-4">
@@ -10,9 +11,9 @@ export function SiteFooter() {
             <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand font-extrabold text-brand-foreground">
               T
             </span>
-            <span className="text-lg font-bold text-white">{COMPANY.name}</span>
+            <span className="text-lg font-bold text-white">{s.companyName}</span>
           </div>
-          <p className="mt-3 text-sm text-gray-400">{COMPANY.tagline}</p>
+          <p className="mt-3 text-sm text-gray-400">{s.tagline}</p>
         </div>
 
         <div>
@@ -28,10 +29,10 @@ export function SiteFooter() {
         <div>
           <h3 className="text-sm font-semibold text-white">Kontakt</h3>
           <ul className="mt-3 space-y-2 text-sm">
-            <li><a href={COMPANY.phoneHref} className="hover:text-brand">{COMPANY.phone}</a></li>
-            <li><a href={`mailto:${COMPANY.email}`} className="hover:text-brand">{COMPANY.email}</a></li>
-            <li>{COMPANY.address.zip} {COMPANY.address.city}</li>
-            <li>{COMPANY.hours}</li>
+            <li><a href={telHref(s.phone)} className="hover:text-brand">{s.phone}</a></li>
+            <li><a href={`mailto:${s.email}`} className="hover:text-brand">{s.email}</a></li>
+            <li>{s.zip} {s.city}</li>
+            <li>{s.hours}</li>
           </ul>
         </div>
 
@@ -46,7 +47,7 @@ export function SiteFooter() {
       </div>
 
       <div className="border-t border-white/10 py-4 text-center text-xs text-gray-500">
-        © {new Date().getFullYear()} {COMPANY.legal.company} · Alle Rechte vorbehalten
+        © {new Date().getFullYear()} {s.legalCompany} · Alle Rechte vorbehalten
       </div>
     </footer>
   );

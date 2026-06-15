@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { COMPANY } from "@/lib/company";
+import { getSiteSettings, telHref } from "@/lib/site-settings";
 
 const SERVICES = [
   {
@@ -31,7 +31,8 @@ const USPS = [
   { title: "Einfache Online-Buchung", desc: "In wenigen Schritten gebucht." },
 ];
 
-export default function Home() {
+export default async function Home() {
+  const s = await getSiteSettings();
   return (
     <>
       {/* Hero */}
@@ -42,11 +43,10 @@ export default function Home() {
               Taxi in ganz Vorarlberg
             </p>
             <h1 className="mt-4 text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl">
-              {COMPANY.tagline}
+              {s.heroTitle}
             </h1>
             <p className="mt-4 max-w-md text-lg text-gray-300">
-              Buchen Sie Ihre Fahrt bequem online — Flughafentransfer,
-              Stadtfahrten und mehr. Schnell, sicher und zu fairen Preisen.
+              {s.heroSubtitle}
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link
@@ -56,10 +56,10 @@ export default function Home() {
                 Jetzt online buchen
               </Link>
               <a
-                href={COMPANY.phoneHref}
+                href={telHref(s.phone)}
                 className="rounded-lg border border-white/30 px-6 py-3 font-semibold text-white transition-colors hover:bg-white/10"
               >
-                Anrufen: {COMPANY.phone}
+                Anrufen: {s.phone}
               </a>
             </div>
           </div>
@@ -157,10 +157,10 @@ export default function Home() {
               Online buchen
             </Link>
             <a
-              href={COMPANY.phoneHref}
+              href={telHref(s.phone)}
               className="rounded-lg border border-ink/30 px-6 py-3 font-semibold text-brand-foreground hover:bg-black/5"
             >
-              {COMPANY.phone}
+              {s.phone}
             </a>
           </div>
         </div>

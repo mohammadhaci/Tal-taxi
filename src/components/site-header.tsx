@@ -1,7 +1,9 @@
 import Link from "next/link";
-import { COMPANY, NAV_LINKS } from "@/lib/company";
+import { NAV_LINKS } from "@/lib/company";
+import { getSiteSettings, telHref } from "@/lib/site-settings";
 
-export function SiteHeader() {
+export async function SiteHeader() {
+  const s = await getSiteSettings();
   return (
     <header className="sticky top-0 z-40 w-full border-b border-border bg-background/90 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
@@ -10,7 +12,7 @@ export function SiteHeader() {
             T
           </span>
           <span className="text-lg font-bold tracking-tight text-ink">
-            {COMPANY.name}
+            {s.companyName}
           </span>
         </Link>
 
@@ -28,10 +30,10 @@ export function SiteHeader() {
 
         <div className="flex items-center gap-2">
           <a
-            href={COMPANY.phoneHref}
+            href={telHref(s.phone)}
             className="hidden text-sm font-semibold text-ink sm:inline"
           >
-            {COMPANY.phone}
+            {s.phone}
           </a>
           <Link
             href="/buchen"
